@@ -6,11 +6,11 @@ import { ShopContext } from '../context/ShopContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const API_BASE = process.env.REACT_APP_API_URL;
+const API_BASE = process.env.VITE_APP_API_URL;
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState('cod')
-  const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products } = useContext(ShopContext)
+  const { navigate, token, cartItems, setCartItems, getCartAmount, delivery_fee, products } = useContext(ShopContext)
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -65,7 +65,7 @@ const PlaceOrder = () => {
 
         // api calls for cod
         case 'cod':
-          const response = await axios.post(backendUrl + `${API_BASE}/api/order/place`, orderData, { headers: { token } })
+          const response = await axios.post(`${API_BASE}/api/order/place`, orderData, { headers: { token } })
           if (response.data.success) {
             setCartItems({})
             navigate('/orders')
@@ -76,7 +76,7 @@ const PlaceOrder = () => {
           break;
 
         case 'stripe':
-          const responseStripe = await axios.post(backendUrl + `${API_BASE}/api/order/stripe`, orderData, { headers: { token } })
+          const responseStripe = await axios.post(`${API_BASE}/api/order/stripe`, orderData, { headers: { token } })
           if (responseStripe.data.success) {
             const { session_url } = responseStripe.data
             window.location.replace(session_url)
@@ -88,7 +88,7 @@ const PlaceOrder = () => {
           break;
 
         case 'flutterwave':
-          const responseFlutterwave = await axios.post(backendUrl + `${API_BASE}/api/order/flutterwave`, orderData, { headers: { token } })
+          const responseFlutterwave = await axios.post(`${API_BASE}/api/order/flutterwave`, orderData, { headers: { token } })
           console.log(responseFlutterwave.data);
 
           if (responseFlutterwave.data.success) {

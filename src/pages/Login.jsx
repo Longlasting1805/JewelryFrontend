@@ -3,12 +3,12 @@ import { ShopContext } from '../context/ShopContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const API_BASE = process.env.REACT_APP_API_URL;
+const API_BASE = process.env.VITE_APP_API_URL;
 
 const Login = () => {
 
   const [currentState, setCurrentState] = useState('Login')
-  const { token, setToken, navigate, backendUrl } = useContext(ShopContext)
+  const { token, setToken, navigate } = useContext(ShopContext)
 
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
@@ -19,7 +19,7 @@ const Login = () => {
     event.preventDefault()
     try {
       if (currentState === 'Sign Up') {
-        const response = await axios.post(backendUrl + `${API_BASE}/api/user/register`, { name, email, password })
+        const response = await axios.post(`${API_BASE}/api/user/register`, { name, email, password })
         if (response.data.success) {
           setToken(response.data.token)
           localStorage.setItem('token', response.data.token)
@@ -28,7 +28,7 @@ const Login = () => {
         }
 
       } else {
-        const response = await axios.post(backendUrl + `${API_BASE}/api/user/login`, { email, password })        
+        const response = await axios.post(`${API_BASE}/api/user/login`, { email, password })        
         if (response.data.success) {
           setToken(response.data.token)
           localStorage.setItem('token', response.data.token)

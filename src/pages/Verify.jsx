@@ -4,10 +4,10 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const API_BASE = process.env.REACT_APP_API_URL;
+const API_BASE = process.env.VITE_APP_API_URL;
 
 const Verify = () => {
-  const { navigate, token, setCartItems, backendUrl } = useContext(ShopContext);
+  const { navigate, token, setCartItems} = useContext(ShopContext);
   const [searchParams] = useSearchParams();
   const [verifying, setVerifying] = useState(true);
 
@@ -20,7 +20,7 @@ const Verify = () => {
 
     try {
       if (transactionId) {
-        const res = await axios.post(backendUrl + `${API_BASE}/api/order/verifyFlutterwave`, { transactionId, orderId }, { headers: { token } }
+        const res = await axios.post(`${API_BASE}/api/order/verifyFlutterwave`, { transactionId, orderId }, { headers: { token } }
         );
         if (res.data.success) {
           setCartItems({});
@@ -30,7 +30,7 @@ const Verify = () => {
         }
       } else {
         // Stripe
-        const res = await axios.post(backendUrl + `${API_BASE}/api/order/verifyStripe`, { success, orderId },{ headers: { token } }
+        const res = await axios.post(`${API_BASE}/api/order/verifyStripe`, { success, orderId },{ headers: { token } }
         );
         if (res.data.success) {
           setCartItems({});
