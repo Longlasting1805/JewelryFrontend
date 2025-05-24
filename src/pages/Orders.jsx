@@ -34,6 +34,8 @@ const Orders = () => {
       }      
       
     } catch (error) {
+      console.error(error)
+      toast.error(error.message || 'Failed to fetch orders')
       
     }
     
