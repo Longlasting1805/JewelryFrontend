@@ -3,7 +3,7 @@ import { ShopContext } from '../context/ShopContext'
 import Title from '../components/Title'
 import axios from 'axios'
 
-const API_BASE = process.env.VITE_APP_API_URL;
+const API_BASE = import.meta.env.VITE_APP_API_URL;
 
 const Orders = () => {
 

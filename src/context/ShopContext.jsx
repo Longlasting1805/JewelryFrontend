@@ -8,7 +8,7 @@ import axios from 'axios'
 
 export const ShopContext = createContext();
 
-const API_BASE = process.env.VITE_APP_API_URL;
+const API_BASE = import.meta.env.VITE_APP_API_URL;
 
 
 const ShopContextProvider = (props) => {

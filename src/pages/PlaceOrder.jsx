@@ -6,7 +6,7 @@ import { ShopContext } from '../context/ShopContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const API_BASE = process.env.VITE_APP_API_URL;
+const API_BASE = import.meta.env.VITE_APP_API_URL;
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState('cod')

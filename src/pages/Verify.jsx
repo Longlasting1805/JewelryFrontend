@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const API_BASE = process.env.VITE_APP_API_URL;
+const API_BASE = import.meta.env.VITE_APP_API_URL;
 
 const Verify = () => {
   const { navigate, token, setCartItems} = useContext(ShopContext);
