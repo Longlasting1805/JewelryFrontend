@@ -38,10 +38,6 @@ const LatestCollection = () => {
                         Thanks for your patience.
                     </p>
 
-                    <p className="mt-4 text-sm text-gray-400">
-                        Attempt {retryCount + 1} of 7
-                    </p>
-
                 </div>
 
             ) : (
