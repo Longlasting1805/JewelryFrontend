@@ -117,63 +117,76 @@ const ShopContextProvider = (props) => {
         return totalAmount
     }
 
- const getProductsData = async (retries = 6) => {
-    try {
-        setLoadingProducts(true);
-
-        const response = await axios.get(`${API_BASE}/api/product/list`);
-
-        if (response.data.success) {
-            setProducts(response.data.products);
-            setLoadingProducts(false);
-            setRetryCount(0);
-            return;
-        }
-
-    } catch (error) {
-
-        console.log(error.message);
-
-        if (retries > 0) {
-
-            setRetryCount(prev => prev + 1);
-
-            setTimeout(() => {
-                getProductsData(retries - 1);
-            }, 5000);
-
-            return;
-        }
-
-        setLoadingProducts(false);
-
-        toast.error("Unable to connect to our server.");
-    }
-}
-    const getUserCart = async (token) => {
+    const getProductsData = async (retries = 6) => {
         try {
-            const response = await axios.post(`${API_BASE}/api/cart/get`, {}, { headers: { token } })
+            setLoadingProducts(true);
+
+            const response = await axios.get(`${API_BASE}/api/product/list`);
+
             if (response.data.success) {
-                setCartItems(response.data.cartData)
+                setProducts(response.data.products);
+                setLoadingProducts(false);
+                setRetryCount(0);
+                return;
             }
+
+        } catch (error) {
+
+            console.log(error.message);
+
+            if (retries > 0) {
+
+                setRetryCount(prev => prev + 1);
+
+                setTimeout(() => {
+                    getProductsData(retries - 1);
+                }, 5000);
+
+                return;
+            }
+
+            setLoadingProducts(false);
+
+            toast.error("Unable to connect to our server.");
+        }
+    }
+    const getUserCart = async (token) => {
+        if (!token) return;
+
+        try {
+            const response = await axios.post(
+                `${API_BASE}/api/cart/get`,
+                {},
+                { headers: { token } }
+            );
+
+            if (response.data.success) {
+                setCartItems(response.data.cartData || {});
+            }
+
         } catch (error) {
             console.log(error);
-            toast.error(error.message)
-
+            toast.error(error.message);
         }
     }
 
     useEffect(() => {
-        getProductsData()
-    }, [])
+        getProductsData();
+    }, []);
 
     useEffect(() => {
-        if (!token && localStorage.getItem('token')) {
-            setToken(localStorage.getItem('token'))
-            getUserCart(localStorage.getItem('token'))
-        }
+        const savedToken = localStorage.getItem("token");
 
-    }, [])
+        if (savedToken) {
+            setToken(savedToken);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (token) {
+            getUserCart(token);
+        }
+    }, [token]);
 
     const value = {
         products, currency, delivery_fee,
@@ -182,12 +195,9 @@ const ShopContextProvider = (props) => {
         getCartCount, updateQuantity,
         getCartAmount, navigate,
         setToken, token, loadingProducts,
-        retryCount
+        retryCount,
 
     }
-
-
-
 
 
     return (
