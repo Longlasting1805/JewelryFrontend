@@ -100,22 +100,21 @@ const ShopContextProvider = (props) => {
 
     }
 
-    const getCartAmount = () => {
-        let totalAmount = 0
-        for (const items in cartItems) {
-            let itemInfo = products.find((product) => product._id === items)
-            for (const item in cartItems[items]) {
-                try {
-                    if (cartItems[items][item] > 0) {
-                        totalAmount += itemInfo.price * cartItems[items][item]
-                    }
-                } catch (error) {
+   const getCartAmount = () => { 
+    let totalAmount = 0 
+    for (const items in cartItems) { 
+        let itemInfo = products.find((product) => product._id === items) 
+        for (const item in cartItems[items]) { 
+            try { 
+                if (cartItems[items][item] > 0) { 
+                    totalAmount += itemInfo.price * cartItems[items][item] } } 
+                    catch (error) {
 
+                     } 
+                    }
+                 } 
+                 return totalAmount 
                 }
-            }
-        }
-        return totalAmount
-    }
 
     const getProductsData = async (retries = 6) => {
         try {
@@ -169,6 +168,11 @@ const ShopContextProvider = (props) => {
             toast.error(error.message);
         }
     }
+
+    
+    useEffect(() => {
+        getProductsData()
+    }, [])
 
     useEffect(() => {
         getProductsData();
